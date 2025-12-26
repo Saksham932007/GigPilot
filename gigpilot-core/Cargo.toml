@@ -5,6 +5,10 @@ edition.workspace = true
 authors.workspace = true
 license.workspace = true
 
+[[bin]]
+name = "worker"
+path = "src/bin/worker.rs"
+
 [dev-dependencies]
 sqlx = { workspace = true, features = ["runtime-tokio-native-tls", "postgres", "chrono", "uuid", "migrate"] }
 
