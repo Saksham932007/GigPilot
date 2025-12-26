@@ -99,15 +99,22 @@ async fn main() -> anyhow::Result<()> {
     // Load environment variables
     dotenv().ok();
     
-    // Initialize tracing
+    // Initialize tracing with structured logging
     let filter = EnvFilter::try_from_default_env()
         .unwrap_or_else(|_| EnvFilter::new("info"))
         .add_directive(LevelFilter::INFO.into());
     
     tracing_subscriber::registry()
-        .with(tracing_subscriber::fmt::layer())
+        .with(
+            tracing_subscriber::fmt::layer()
+                .with_target(true)
+                .with_timer(tracing_subscriber::fmt::time::ChronoUtc::rfc_3339())
+        )
         .with(filter)
         .init();
+    
+    // Log latency tracking configuration
+    info!("Tracing initialized - LLM and DB latency tracking enabled");
     
     info!("Starting GigPilot Core Server...");
     
