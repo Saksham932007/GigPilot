@@ -1,34 +1,23 @@
 [package]
 name = "gigpilot-core"
-version.workspace = true
-edition.workspace = true
-authors.workspace = true
-license.workspace = true
-
-[[bin]]
-name = "worker"
-path = "src/bin/worker.rs"
-
-[dev-dependencies]
-sqlx = { workspace = true, features = ["runtime-tokio-native-tls", "postgres", "chrono", "uuid", "migrate"] }
+version = "0.1.0"
+edition = "2021"
 
 [dependencies]
-# Workspace dependencies
-axum.workspace = true
-tokio.workspace = true
-tower.workspace = true
-tower-http.workspace = true
-sqlx.workspace = true
-serde.workspace = true
-serde_json.workspace = true
-jsonwebtoken.workspace = true
-bcrypt.workspace = true
-chrono.workspace = true
-uuid.workspace = true
-rust_decimal.workspace = true
-anyhow.workspace = true
-thiserror.workspace = true
-tracing.workspace = true
-tracing-subscriber.workspace = true
-dotenv.workspace = true
+axum = "0.6"
+tokio = { version = "1", features = ["full"] }
+sqlx = { version = "0.6", features = ["runtime-tokio-native-tls", "postgres", "macros", "uuid", "json", "chrono"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1", features = ["serde", "v4"] }
+tracing = "0.1"
+tracing-subscriber = { version = "0.3", features = ["fmt", "env-filter"] }
+jsonwebtoken = "8"
+time = "0.3"
+tower = "0.4"
+chrono = { version = "0.4", features = ["serde"] }
+anyhow = "1.0"
+hyper = { version = "0.14", features = ["full"] }
 
+[dev-dependencies]
+dotenvy = "0.15"
