@@ -3,7 +3,7 @@ use axum::{
     http::StatusCode,
     middleware,
     response::Json,
-    routing::get,
+    routing::{get, post},
     Router,
 };
 use dotenv::dotenv;
@@ -15,6 +15,7 @@ use tracing_subscriber::{layer::SubscriberExt, util::SubscriberInitExt, EnvFilte
 mod auth;
 mod db;
 mod models;
+mod sync;
 
 /// Application state containing shared resources.
 /// 
@@ -73,6 +74,18 @@ fn create_router(state: AppState) -> Router {
         // Public routes
         .route("/health", get(health_check))
         .route("/health/db", get(db_health_check))
+        
+        // Sync routes (protected)
+        .route(
+            "/sync/pull",
+            get(sync::pull_handler)
+                .route_layer(middleware::from_fn(auth::auth_middleware))
+        )
+        .route(
+            "/sync/push",
+            post(sync::push_handler)
+                .route_layer(middleware::from_fn(auth::auth_middleware))
+        )
         
         // Protected routes will be added here
         // .route("/api/invoices", get(list_invoices))
